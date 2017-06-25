@@ -25,6 +25,8 @@ header button.add-unicode{
     font-size: 10px;
     width: 16px;
     height: 16px;
+    border: 0;
+    padding: 0;
 }
 header div.header-add{
     position: relative;
