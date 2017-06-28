@@ -18,16 +18,6 @@ header{
     color:rgb(67,67,67);
     z-index:1000;
 }
-header button.add-unicode{
-    background-color: rgb(36,36,36);
-    color: rgb(246,246,246);
-    border-radius: 100%;
-    font-size: 10px;
-    width: 16px;
-    height: 16px;
-    border: 0;
-    padding: 0;
-}
 header div.header-add{
     position: relative;
     top: 35%;
@@ -63,6 +53,7 @@ header div.header-search input.search-button{
 header div.header-search input:focus{
     outline: none;
 }
+
 
 /**container**/
 div.albums-container,
@@ -139,11 +130,14 @@ picture.album-pic .editor ,
 picture.album-pic .play-container{
     visibility: hidden;
 }
-div.albums-container picture.album-pic:hover{
+div.albums-container picture.album-pic:hover,
+div.albums-container picture.album-pic:focus{
     opacity: 1;
 }
 div.albums-container picture.album-pic:hover .editor,
-div.albums-container picture.album-pic:hover .play-container{
+div.albums-container picture.album-pic:hover .play-container,
+div.albums-container picture.album-pic:focus .editor,
+div.albums-container picture.album-pic:focus .play-container{
     visibility: visible;
 }
 button{
@@ -161,50 +155,46 @@ div.header-search input.back-button{
 
 /**playlist body***/
 
-div.playlist-container{
-    justify-content: center;
-    display: none;
-}
-div.playlist-body{
-    display: inline-flex;
-    background-color: slategrey;
-    border-radius: 15rem;
-    max-height: 16rem;
-    max-width: 35rem;
-    width: 35rem;
-}
-div.playlist-body picture{
-    position:relative;
-}
-div.playlist-body picture div.pic-container{
-    margin: 1.8rem;
 
+div.playlist-container div.top{
+background-color: lightblue;
+    border-radius: 45%;
+    width: 60%;
+    height: 20rem;
 }
-div.playlist-body picture div.play-container{
-    position: absolute;
-    width: 100%;
+div.playlist-container div.top audio{
+    width: 60%;
+    display: flex;
+    margin: 0 auto;
+    margin-top: 2.5rem;
+}
+div.playlist-container div.top span{
+    display: flex;
+    justify-content: center;
+    margin: 1rem auto .5rem auto;
+    width: 60%;
+}
+div.playlist-container div.top div.playlist-body{
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+}
+div.playlist-container div.top div.playlist-body div.pic-container{
+    float: left;
+    position: relative; 
+}
+div.playlist-body div.pic-container div.play-container{
     text-align: center;
-    top: 7.5rem;
+    position: absolute;
+    top: 5rem;
+    width: 100%;
 }
+
 div.playlist-container div.playlist-editor{
     display: flex;
     flex-direction: column;
-    margin: auto .8rem;
-}
-div.audio{
-    margin-top: 2rem;
-    max-width: 50%;
-}
-div.audio span{
-    text-align: center;
-    width: 100%;
-    display: inline-block;
-}
-div.audio audio{
-    display: block;
-    max-width: 80%;
-    margin: 0 auto;
-    margin-bottom: 1rem;
 }
 div.playlist-container div.playlist-editor button{
     border: none;
@@ -219,81 +209,106 @@ div.playlist-container div.playlist-editor button{
 div.playlist-container div.playlist-editor button:last-child{
     transform: rotate(-230deg);
 }
-div.playlist-container div.song-list{
+
+
+
+
+
+/***popup***/
+
+#popup,
+#popup1{
+        position: fixed;
+        top: 0;left: 0;right: 0;bottom: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0,0,0,.75);
+        z-index:5000;
+        font-family: 'Tauri', sans-serif;
+}
+#popup_container,
+#popup_container1{
+        max-width: 100%;
+        padding:.5rem 2rem;
+        background-color: white;
+}
+#popup_container1 #containerLeft{
+        float: left;
+        width: 50%;
+}
+#popup_container h2,
+#popup_container1 h2{
+    margin-bottom: .2rem;
+    border-bottom: 2px solid lightgray;
+    font-weight: 500;
+    color: rgb(67,67,67);
+    font-size: 20px;
+}
+#popup_container1 img{
+    width: 200px;
+    height: 200px;
+}
+#popup_container1 #containerLeft #containerInput1{
     display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+}
+#popup_container #containerInput{
+    margin: 1rem;
+    display: flex;
+}
+#popup_container #containerInput label:first-child{
+    margin-bottom: .5rem;
+}
+#popup_container #containerInput label:first-child{
+    margin-right: 2rem;
+}
+#popup_container #containerButton{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: .8rem;
+}
+#popup_container1 #containerImg{
+    float: right;
+}
+#popup_container1 #containerButton1{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5.2rem;
+}
+#popup_container #containerButton button:first-child,
+header div.header-add button{
+    display: flex;
+    flex-direction: row-reverse;
+    border: none;
+    background-color:inherit;
+    font-family: 'Tauri', sans-serif;
+}
+#popup_container #containerButton button:first-child span,
+header div.header-add button span{
+    border-radius: 4px;
+    background-color: rgb(67,67,67);
+    color: white;
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    font-size: 11px;
+}
+header div.header-add button span{
+    border-radius: 50%;
+}
+#popup_container #containerButton button:last-child{
+    padding: 5px;
+    font-weight: 600;
+    color: white;
+    background-color: slategrey;
+    border: 1px solid gray;
+    font-family: 'Tauri', sans-serif;
+}
+
+ #popup_container input,
+ #popup_container1 input{
     width: 100%;
-    justify-content: center;
 }
-div.playlist-container div.top{
-    display: flex;
-}
-
-
-
-@media (max-width:330px){
-    div.audio span{
-       font-size: 12px;
-    }
-    div.playlist-container picture img{
-       width: 120px;
-       height: 120px;
-    }
-    div.playlist-body picture div.play-container{
-        top: 3.9rem;
-    } 
-    
-}
-
-@media (max-width:416px){
-    header div.header-search{
-        top: 20%;
-        right: 0;
-    } 
-    header div.header-add{
-        top: 35%;
-        left: 0; 
-    }
-    div.playlist-container div.playlist-editor button{
-        height: 25px;
-        width: 25px;
-        font-size: 17px;
-        margin: 6px 3px;
-    }
-
-}
-@media (max-width:807px){
-    div.playlist-container div.playlist-editor {
-        margin: auto 0;
-    }
-    div.playlist-container{
-        max-width: 100%;
-    }
-    div.top{
-        max-width: 100%;
-        margin: 0 auto;
-    }
-    div.audio{
-        margin-left: -1rem;
-    }
-}
-@media (max-width:570px){
-    div.playlist-container picture img{
-       width: 150px;
-       height: 150px;
-    }
-    div.playlist-body picture div.pic-container{
-       margin: .8rem; 
-    }
-    div.playlist-body{
-        max-height: 12rem;  
-    }
-    div.playlist-body picture div.play-container{
-        top: 5rem;
-    }
-}
-
-
-
-
-
 

@@ -1,0 +1,114 @@
+
+@media (max-width:807px){
+    div.playlist-container div.playlist-editor {
+        margin: auto 0;
+    }
+    div.playlist-container{
+        max-width: 100%;
+    }
+    div.top{
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    div.audio{
+        margin-left: -1rem;
+    }
+}
+@media (max-width:690px){
+    #popup_container1 {
+        padding: .5rem;
+    }
+    #popup_container1 h2{
+        font-size: 18px;
+    }
+    #popup_container1 #containerInput1{
+        font-size:13px;
+    }
+    #popup_container1 #containerButton1{
+        margin-top:3rem;
+    }
+    #popup_container1 img{
+       width: 160px;
+       height: 160px;
+    }
+};
+@media (max-width:570px){
+    div.playlist-container picture img{
+       width: 150px;
+       height: 150px;
+    }
+    div.playlist-body picture div.pic-container{
+       margin: .8rem; 
+    }
+    div.playlist-body{
+        max-height: 12rem;  
+    }
+    div.playlist-body picture div.play-container{
+        top: 5rem;
+    }
+}
+
+
+@media (max-width:416px){
+    header div.header-search{
+        top: 20%;
+        right: 0;
+    } 
+    header div.header-add{
+        top: 35%;
+        left: 0; 
+    }
+    div.playlist-container div.playlist-editor button{
+        height: 25px;
+        width: 25px;
+        font-size: 17px;
+        margin: 6px 3px;
+    }
+    #popup_container{
+        padding: 0 .5rem;
+    }
+    #popup_container h2{
+        font-size: 16px;
+    }
+    #popup_container #containerInput,
+    #popup_container #containerButton button{
+        font-size:12px;
+    }
+    header div.header-add button{
+        font-size: 12px;
+    }
+}
+
+@media (max-width:330px){
+    div.audio span{
+       font-size: 12px;
+    }
+    div.playlist-container picture img{
+       width: 120px;
+       height: 120px;
+    }
+    div.playlist-body picture div.play-container{
+        top: 3.9rem;
+    } 
+    
+}
+
+@media (max-width:370px){
+    #popup_container1 h2{
+        font-size: 16px;
+    }
+    #popup_container1 #containerLeft{
+        width: 47%;
+    }
+    #popup_container1 #containerInput1{
+        font-size:12px;
+    }
+    #popup_container1 #containerButton1{
+        margin-top:2rem;
+    }
+    #popup_container1 img{
+       width: 145px;
+       height: 145px;
+    }    
+}
+

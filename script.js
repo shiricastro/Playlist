@@ -79,7 +79,11 @@ function toHomePage(){
 }
 
 
-
+$('div.header-add button').click(function(){
+    var popup = new popupNewAlbum('http://redipal.diputados.gob.mx/ow_static/themes/origin/images/album_no_cover.png');
+    popup.build();
+    console.log(popup);   
+}); 
 
 
 
