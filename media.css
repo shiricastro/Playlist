@@ -77,6 +77,33 @@
     header div.header-add button{
         font-size: 12px;
     }
+    
+    /***********/
+    div.playlist-container div.top div.playlist-body{
+        justify-content: center;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+    div.song-list ol{
+        padding: 2px;
+    }
+    div.playlist-container div.top{
+        width: 70%;
+        height: 25rem;
+    }
+
+    div.playlist-container div.top > span{
+        width: 100%;
+    }
+    div.playlist-container div.playlist-editor{
+        right: -2rem;
+    }
+    div.song-list{
+        padding-top: 0;
+    }
+    
+    
+    
 }
 
 @media (max-width:330px){
@@ -90,6 +117,9 @@
     div.playlist-body picture div.play-container{
         top: 3.9rem;
     } 
+    div.playlist-body div.pic-container div.play-container{
+        top: 3rem;
+    }
     
 }
 
@@ -111,4 +141,8 @@
        height: 145px;
     }    
 }
+
+
+
+
 
