@@ -6,6 +6,8 @@
         <div>pause ❚❚ </div>
 
  */
+/***albums***/
+
 albums();
 function albums(){
     $.get('http://localhost/playlist/public_html/api/playlist', function(data){
@@ -15,6 +17,7 @@ function albums(){
             $('<figcaption>',{
                 text:el.name
             }).appendTo(album);
+            $('figcaption').circleType({radius: 200});
             var editor = $('<div>',{class:"editor"}).appendTo(album);
             $('<button>',{text:"✖",click:function(e){deleteAlbumPopup(e,null);}}).appendTo(editor);
             $('<button>',{text:"✏",click:editAlbum}).appendTo(editor);
@@ -26,45 +29,70 @@ function albums(){
     });
 }
 
+
+
+
 function playAlbum(e,id){
     $('input.back-button').css({"display":"block"});
-    $('input.back-button').click(backHome);
+    $('input.back-button').attr("onclick","backHome()");
     $('input.search').css({"display":"none"});
     $('.albums-container').remove();
 
     $.get('playlist.html', function(playlistData){
         let playlistConatainer = $('<div>',{class:"playlist-container"}).appendTo('body');
-        $('.playlist-editor button.deleteAlbumButton').click(function(e){deleteAlbumPopup(e,id);});
         console.log($(playlistData).find('.playlist-editor button.deleteAlbumButton'));
         $.get("" + 'http://localhost/playlist/public_html/api/playlist/' + id +"", function(data){
             let dataAlbum = data.data;
            $(playlistData).appendTo(playlistConatainer);
-           $(playlistConatainer).find($('span.name')).html(dataAlbum.name);
            $(playlistConatainer).find($('div.pic-container img')).attr("src",dataAlbum.image);
-        });
-
-        $.get("" + 'http://localhost/playlist/public_html/api/playlist/' + id +'/songs' +"", function(dataSong){           
-            let dataSongs = dataSong.data.songs;
-            var audio = $(playlistConatainer).find($('audio source'));
-            $(audio).attr("src",dataSongs[0].url);
-            var songList = $(playlistConatainer).find($('div.song-list ol'));
-            $(dataSongs).each(function(i,el){
-                var li =  $('<li>').appendTo(songList);
-                $('<span>',{text:"►"}).appendTo(li);
-                $('<button>',{text:el.name, click:function(e){
-                      $(audio).attr("src",el.url); 
-                      console.log(el.url);
-                    }       
-                }).appendTo(li);
-            });
-            console.log(dataSongs);
-        });       
+           $('.playlist-editor button.deleteAlbumButton').attr("onclick","deleteAlbumPopup(" + "null,"+id+ ")");
+           $('.play-unicode').attr("onclick","playAudio()");
+            $.get("" + 'http://localhost/playlist/public_html/api/playlist/' + id +'/songs' +"", function(dataSong){           
+                let dataSongs = dataSong.data.songs;
+                //console.log(dataSong);
+                var audio = $(playlistConatainer).find($('audio source'));
+                $(audio).attr("src",dataSongs[0].url);
+                $("#audio")[0].load();
+                var nameSong = $(playlistConatainer).find($('span.name'));
+                $(nameSong).html(dataSongs[0].name);
+                var songList = $(playlistConatainer).find($('div.song-list ol'));
+                $(dataSongs).each(function(i,el){
+                    var li =  $('<li>').appendTo(songList);
+                    $('<span>',{text:"►"}).appendTo(li);
+                    $('<button>',{text:el.name, click:function(e){
+                          $(audio).attr("src",el.url);
+                          $(nameSong).html(el.name);
+                          console.log(el.url);
+                        }       
+                    }).appendTo(li);
+                });
+                console.log(dataSongs);
+            });       
+        });        
     });
 }
 
+function playAudio(){
+   var audio = $("#audio"); 
+   audio[0].load();
+   audio[0].play();
+   $('.play-unicode').attr("onclick","pauseAudio()");
+    $(".play-unicode").html('❚❚');
+}
+function pauseAudio(){
+   var audio = $("#audio");  
+   audio[0].pause();
+    $('.play-unicode').attr("onclick","playAudio()");
+    $(".play-unicode").html('►');
+}
+
 function deleteAlbumPopup(e,idAlbum){
-    console.log(e);
-    var id = $(e.target).parents('picture').attr("id");
+    console.log(idAlbum);
+    if(idAlbum === null){
+        var id = $(e.target).parents('picture').attr("id");   
+    }else{
+        var id = idAlbum;
+    }   
     var popup =$('<div>',{
        id:"popup1",
         click:function(e){
@@ -74,13 +102,16 @@ function deleteAlbumPopup(e,idAlbum){
         }
     }).appendTo('body');
     var content = $('<div>',{
-        id:"popup_container1"
+        id:"popup_container1",
+        class:"qurstionCont"
     }).appendTo(popup);
-    $('<h2>',{text:"Are you Sure??"}).appendTo(content);
+    $('<h2>',{text:"Are you Sure??",class:"qurstion"}).appendTo(content);
     $('<button>',{text:"YES",id:"yesDelete",click:function(e){deleteAlbum(id,popup);}}).appendTo(content);
     $('<button>',{text:"NO",id:"noDelete",click:function(){$(popup).remove();}}).appendTo(content);
+    
 }
 function deleteAlbum(id,pop){
+    backHome();
     console.log(id);
     $(pop).remove();
 }
@@ -95,6 +126,7 @@ function backHome(){
     albums();    
 }
 
+/***popup***/
 
 var newPlaylistObject={};
 $('div.header-add button').click(createPopup);

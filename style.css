@@ -83,10 +83,11 @@ div.albums-container picture.album-pic div.pic-container{
     text-align: center;
 }
 div.albums-container picture.album-pic div.editor{
-    position: relative;
-    top: 2rem;
-    width: 100%;
-    text-align: center;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    width: 75%;
+    top: 4.5rem;
 }
 div.albums-container picture figcaption{      
     font-family: 'Carter One', cursive;
@@ -100,6 +101,7 @@ div.albums-container picture div.editor button{
     background-color: rgb(246,246,246);
     width: 20px;
     height: 20px;
+    margin:2px;
 }
 div.albums-container picture div.editor button:first-child{        
     padding: 0 3.9px 1px 4.9px;
@@ -125,7 +127,9 @@ div.playlist-container picture button.play-unicode{
     padding: 0 0 0 2.5px;
     border:0;
 }
-
+div.playlist-container picture button.play-unicode{
+    padding: 1px 0 0 5px;
+}
 picture.album-pic .editor ,
 picture.album-pic .play-container{
     visibility: hidden;
@@ -168,11 +172,12 @@ div.playlist-container div.top audio{
     margin: 0 auto;
     margin-top: 2rem;
 }
-div.playlist-container div.top > span{
+div.playlist-container div.top > div.divName{
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     margin: .8rem auto .5rem auto;
     width: 60%;
+    overflow: hidden;
 }
 div.playlist-container div.top div.playlist-body{
     display: flex;
@@ -183,17 +188,17 @@ div.playlist-container div.top div.playlist-body{
 }
 div.playlist-container div.top div.playlist-body div.pic-container{
     float: left;
-    position: relative; 
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 div.playlist-body{
     position: relative;    
 }
 
 div.playlist-body div.pic-container div.play-container{
-    text-align: center;
     position: absolute;
-    top: 5rem;
-    width: 100%;
 }
 
 div.playlist-container div.playlist-editor{
@@ -340,4 +345,46 @@ header div.header-add button span{
  #popup_container1 input{
     width: 100%;
 }
+button#yesDelete ,
+button#noDelete{
+    width: 50%;
+    font-family: 'Tauri', sans-serif;
+}
+button#yesDelete:hover ,
+button#noDelete:hover{
+    background-color: gray;
+    color:white;
+}
+div.qurstionCont{
+    padding:1rem 2rem!important;
+}
+h2.qurstion{
+   margin:0;
+}
+div.playlist-container div.top div.divName > span{
+    animation: moveNameSong 6s infinite linear;
+    width: inherit;
+}
+@keyframes moveNameSong {
+  from { 
+    transform: translateX(100%);
+  }
+  to{
+    transform: translateX(-100%);  
+  }   
+}
+div.playlist-body .pic-container img{
+    animation: rotateAlbumPic 15s infinite linear;
+}
+@keyframes rotateAlbumPic {
+  from { 
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(-360deg);  
+  }   
+}
+
+
+
 
