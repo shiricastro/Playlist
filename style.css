@@ -93,6 +93,7 @@ div.albums-container picture figcaption{
     font-family: 'Carter One', cursive;
     font-size: 1.2rem; 
     text-align: center;
+        max-height: 30.1px;
 }
 div.albums-container picture div.editor button{
     border-radius: 100%;
@@ -128,7 +129,8 @@ div.playlist-container picture button.play-unicode{
     border:0;
 }
 div.playlist-container picture button.play-unicode{
-    padding: 1px 0 0 5px;
+    padding: 0px;
+    font-size: 22.2px;
 }
 picture.album-pic .editor ,
 picture.album-pic .play-container{

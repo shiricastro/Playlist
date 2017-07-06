@@ -17,7 +17,7 @@ function albums(){
             $('<figcaption>',{
                 text:el.name
             }).appendTo(album);
-            $('figcaption').circleType({radius: 200});
+            $('figcaption').circleType({radius: 130});
             var editor = $('<div>',{class:"editor"}).appendTo(album);
             $('<button>',{text:"✖",click:function(e){deleteAlbumPopup(e,null);}}).appendTo(editor);
             $('<button>',{text:"✏",click:editAlbum}).appendTo(editor);
@@ -46,25 +46,35 @@ function playAlbum(e,id){
            $(playlistData).appendTo(playlistConatainer);
            $(playlistConatainer).find($('div.pic-container img')).attr("src",dataAlbum.image);
            $('.playlist-editor button.deleteAlbumButton').attr("onclick","deleteAlbumPopup(" + "null,"+id+ ")");
-           $('.play-unicode').attr("onclick","playAudio()");
+           $('.play-unicode').attr("onclick","pauseAudio()");
             $.get("" + 'http://localhost/playlist/public_html/api/playlist/' + id +'/songs' +"", function(dataSong){           
                 let dataSongs = dataSong.data.songs;
                 //console.log(dataSong);
-                var audio = $(playlistConatainer).find($('audio source'));
+                var audio = $("#audio");
                 $(audio).attr("src",dataSongs[0].url);
-                $("#audio")[0].load();
+                $(audio).attr("onplay","changeUnicodToPause()");
+                $(audio).attr("onpause","changeUnicodToPlay()");
+                audio[0].load();
                 var nameSong = $(playlistConatainer).find($('span.name'));
-                $(nameSong).html(dataSongs[0].name);
+                $(nameSong).html(dataSongs[0].name);                
                 var songList = $(playlistConatainer).find($('div.song-list ol'));
                 $(dataSongs).each(function(i,el){
+                    let currentSongId = i+ 1 + ".";
                     var li =  $('<li>').appendTo(songList);
-                    $('<span>',{text:"►"}).appendTo(li);
+                    $('<span>',{text:currentSongId}).appendTo(li);
                     $('<button>',{text:el.name, click:function(e){
-                          $(audio).attr("src",el.url);
-                          $(nameSong).html(el.name);
-                          console.log(el.url);
-                        }       
+                        $('li span').each(function(i,el){
+                            $(el).html(i+1 + ".");
+                        });
+                        audio[0].pause();
+                        $(audio).attr("src",el.url);
+                        audio[0].load();
+                        audio[0].play();                          
+                        $(nameSong).html(el.name); 
+                        $(e.target.previousSibling).html("►");                                                 
+                    }                               
                     }).appendTo(li);
+                    $('li:first-child span').html("►");
                 });
                 console.log(dataSongs);
             });       
@@ -76,15 +86,24 @@ function playAudio(){
    var audio = $("#audio"); 
    audio[0].load();
    audio[0].play();
-   $('.play-unicode').attr("onclick","pauseAudio()");
-    $(".play-unicode").html('❚❚');
+   changeUnicodToPause();
 }
 function pauseAudio(){
    var audio = $("#audio");  
    audio[0].pause();
+   changeUnicodToPlay();
+}
+function changeUnicodToPause(){
+   $('.play-unicode').attr("onclick","pauseAudio()");
+   $(".play-unicode").html('❚❚');
+   $(".play-unicode").css({"padding":"0px","font-size":"22.2px"});  
+}
+function changeUnicodToPlay(){
     $('.play-unicode').attr("onclick","playAudio()");
     $(".play-unicode").html('►');
+    $(".play-unicode").css({"padding":"1px 0 0 5px","font-size":"23.5px"}); 
 }
+
 
 function deleteAlbumPopup(e,idAlbum){
     console.log(idAlbum);
@@ -111,9 +130,17 @@ function deleteAlbumPopup(e,idAlbum){
     
 }
 function deleteAlbum(id,pop){
-    backHome();
+    
     console.log(id);
     $(pop).remove();
+    $.ajax({
+        url:'http://localhost/playlist/public_html/api/playlist/' + id ,
+        type:'DELETE',
+        success:function(){
+            alert("success");
+            backHome();
+        }
+    });
 }
 function editAlbum(){
     
