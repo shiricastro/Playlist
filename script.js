@@ -1,11 +1,3 @@
-/*
-         <div>pencil ✏ ✐ </div>
-        <div>delete ✖</div>
-        <div>play  ►</div>
-        <div>add ➕</div>
-        <div>pause ❚❚ </div>
-
- */
 /***albums***/
 
 albums();
@@ -20,7 +12,7 @@ function albums(){
             $('figcaption').circleType({radius: 130});
             var editor = $('<div>',{class:"editor"}).appendTo(album);
             $('<button>',{text:"✖",click:function(e){deleteAlbumPopup(e,null);}}).appendTo(editor);
-            $('<button>',{text:"✏",click:editAlbum}).appendTo(editor);
+            $('<button>',{text:"✏",click:function(e){editPlaylist(e,el.id);}}).appendTo(editor);
             var picContainer = $('<div>',{class:"pic-container"}).appendTo(album);
             $('<img>',{src: el.image,alt:el.name}).appendTo(picContainer);
             var playContainer = $('<div>',{class:"play-container"}).appendTo(picContainer);
@@ -40,16 +32,15 @@ function playAlbum(e,id){
 
     $.get('playlist.html', function(playlistData){
         let playlistConatainer = $('<div>',{class:"playlist-container"}).appendTo('body');
-        console.log($(playlistData).find('.playlist-editor button.deleteAlbumButton'));
         $.get("" + 'http://localhost/playlist/public_html/api/playlist/' + id +"", function(data){
             let dataAlbum = data.data;
            $(playlistData).appendTo(playlistConatainer);
            $(playlistConatainer).find($('div.pic-container img')).attr("src",dataAlbum.image);
            $('.playlist-editor button.deleteAlbumButton').attr("onclick","deleteAlbumPopup(" + "null,"+id+ ")");
+           $('.playlist-editor button.editAlbumButton').attr("onclick","editPlaylist(" + "null,"+id+ ")");
            $('.play-unicode').attr("onclick","pauseAudio()");
             $.get("" + 'http://localhost/playlist/public_html/api/playlist/' + id +'/songs' +"", function(dataSong){           
                 let dataSongs = dataSong.data.songs;
-                //console.log(dataSong);
                 var audio = $("#audio");
                 $(audio).attr("src",dataSongs[0].url);
                 $(audio).attr("onplay","changeUnicodToPause()");
@@ -66,15 +57,20 @@ function playAlbum(e,id){
                         $('li span').each(function(i,el){
                             $(el).html(i+1 + ".");
                         });
+                        $('li').each(function(i,el){
+                            $(el).css({"opacity":"0.65"});
+                        });                        
                         audio[0].pause();
                         $(audio).attr("src",el.url);
                         audio[0].load();
-                        audio[0].play();                          
+                        audio[0].play();                        
                         $(nameSong).html(el.name); 
-                        $(e.target.previousSibling).html("►");                                                 
+                        $(e.target.previousSibling).html("►");
+                        $(e.target).parent().css({"opacity":"1"});
                     }                               
                     }).appendTo(li);
                     $('li:first-child span').html("►");
+                    $('li:first-child').css({"opacity":"1"});
                 });
                 console.log(dataSongs);
             });       
@@ -85,23 +81,28 @@ function playAlbum(e,id){
 function playAudio(){
    var audio = $("#audio"); 
    audio[0].load();
-   audio[0].play();
+   audio[0].play();  
    changeUnicodToPause();
 }
+
 function pauseAudio(){
    var audio = $("#audio");  
-   audio[0].pause();
+   audio[0].pause();   
    changeUnicodToPlay();
 }
+
 function changeUnicodToPause(){
+   $('div.playlist-body .pic-container img').css({"animation-play-state":"running"});  
    $('.play-unicode').attr("onclick","pauseAudio()");
    $(".play-unicode").html('❚❚');
    $(".play-unicode").css({"padding":"0px","font-size":"22.2px"});  
 }
+
 function changeUnicodToPlay(){
+    $('div.playlist-body .pic-container img').css({"animation-play-state":"paused"}); 
     $('.play-unicode').attr("onclick","playAudio()");
     $(".play-unicode").html('►');
-    $(".play-unicode").css({"padding":"1px 0 0 5px","font-size":"23.5px"}); 
+    $(".play-unicode").css({"padding":"1px 0 0 5px","font-size":"23.5px"});
 }
 
 
@@ -126,11 +127,10 @@ function deleteAlbumPopup(e,idAlbum){
     }).appendTo(popup);
     $('<h2>',{text:"Are you Sure??",class:"qurstion"}).appendTo(content);
     $('<button>',{text:"YES",id:"yesDelete",click:function(e){deleteAlbum(id,popup);}}).appendTo(content);
-    $('<button>',{text:"NO",id:"noDelete",click:function(){$(popup).remove();}}).appendTo(content);
-    
+    $('<button>',{text:"NO",id:"noDelete",click:function(){$(popup).remove();}}).appendTo(content);    
 }
-function deleteAlbum(id,pop){
-    
+
+function deleteAlbum(id,pop){    
     console.log(id);
     $(pop).remove();
     $.ajax({
@@ -138,12 +138,10 @@ function deleteAlbum(id,pop){
         type:'DELETE',
         success:function(){
             alert("success");
+            $('header').siblings('div')[0].remove();
             backHome();
         }
     });
-}
-function editAlbum(){
-    
 }
 
 function backHome(){
@@ -152,6 +150,10 @@ function backHome(){
     $('.playlist-container').remove();
     albums();    
 }
+
+
+
+
 
 /***popup***/
 
@@ -163,7 +165,7 @@ $('body').keydown(function(e){
         $('#popup1').remove();
     }  
 });
-function createPopup(e){
+function createPopup(){
    var popup =$('<div>',{
        id:"popup1",
         click:function(e){
@@ -177,11 +179,11 @@ function createPopup(e){
             id:"popup_container1",
             html:data
         }).appendTo(popup);
-        content.find('form').submit(function(e){
-            e.preventDefault();
+        content.find('form#formAlbum').submit(function(e){
+            e.preventDefault();          
             newPlaylistObject.name = $(e.target).find('input[name=name]').val();
-            newPlaylistObject.pic = $(e.target).find('input[name=pic]').val();
-            //console.log(newPlaylistObject);
+            newPlaylistObject.image = $(e.target).find('input[name=pic]').val();
+            console.log(newPlaylistObject);
             addSongs($(e.target));
         });
         $('button#previewButton').click(function(e){
@@ -209,7 +211,7 @@ function addSongs(form){
             e.preventDefault();
             addSong().insertBefore(newContent.parent().find('#containerButton')); 
         });
-        newContent.find('form').on("submit", function(e){
+        newContent.find('form#formSongs').on("submit", function(e){
             e.preventDefault();
             newPlaylistObject.songs=[];
             $(e.target).find('div.containerInput').each(function(i,el){
@@ -218,11 +220,126 @@ function addSongs(form){
                song.name =$(el).find('input.inputName').val();
                newPlaylistObject.songs.push(song);
             });
-            //console.log(newPlaylistObject);
+            console.log(newPlaylistObject);            
             newContent.parent().remove();
+            addAlbum();
+        });
+    });
+}
+
+function addAlbum(){
+    $.post('http://localhost/playlist/public_html/api/playlist',newPlaylistObject,function(data,textStatus, xhr){
+        console.log(xhr.status); 
+        $('header').siblings('div')[0].remove();
+        albums();
+    });
+    
+}
+
+function editPlaylist(v,id){
+    if (v === null){
+       pauseAudio(); 
+    }
+    console.log("edit is active" + ": "+ id);
+    $.get("" + 'http://localhost/playlist/public_html/api/playlist/' + id +"", function(data){
+        createPopupToEdit(data.data,id);
+    });
+}
+
+function editAlbum(id){
+    $.post('http://localhost/playlist/public_html/api/playlist/'+ id,{"name": editAlbumObject.name , "image":editAlbumObject.image} ,function(data, status){
+        $('header').siblings('div')[0].remove();
+        albums();
+    });
+}
+function saveNewSongs(id, songs){
+    $.post('http://localhost/playlist/public_html/api/playlist/'+ id + "/songs",{songs} ,function(data, status){
+        $('header').siblings('div')[0].remove();
+        albums();
+    });    
+}
+
+var editAlbumObject={};
+function createPopupToEdit(val,id){
+   var popup =$('<div>',{
+       id:"popup1",
+        click:function(e){
+            if (e.target.id === 'popup1') {
+		this.remove();
+            }
+        }
+    });
+   $.get('popupAlbums.html',function(data){
+        var content = $('<div>',{
+            id:"popup_container1",
+            html:data
+        }).appendTo(popup);
+        $('input#inputName').val(val.name);
+        $('input.inputUrl').val(val.image);
+        $('h2#title1').html("Update existing playlist");
+        content.find('form#formAlbum').submit(function(e){
+            e.preventDefault();          
+            editAlbumObject.name =$(e.target).find('input[name=name]').val();
+            editAlbumObject.image =$(e.target).find('input[name=pic]').val();
+            editAlbum(id);
+            editSongs($(e.target),id);
+        });
+        $('button#previewButton').click(function(e){
+            e.preventDefault();
+            var picUrl = $(' form input[name=pic]').val();
+           $('img#previewButton').attr("src", ("" + picUrl + "")); 
+        });
+
+   });      
+    popup.appendTo('body');
+}
+
+function editSongs(form,id){
+    var content = form.parent().parent();       
+    content.remove();
+    $.get("" + 'http://localhost/playlist/public_html/api/playlist/' + id +"/songs", function(dataSongs){ 
+        console.log(dataSongs);
+        let songsArray = dataSongs.data.songs;
+        console.log(songsArray);
+        $.get('popupSongs.html',function(data){
+            var newContent = $('<div>',{
+                id:"popup_container",
+                html:data
+            }).appendTo($('#popup1'));
+            var arrayCount = Number(songsArray.length-1);
+            for(arrayCount; arrayCount>=Number(0); arrayCount--){ 
+                console.log(arrayCount);
+              var song = addSong();
+              $(song).find('input.inputName').val(songsArray[arrayCount].name);
+              $(song).find('input.inputUrl').val(songsArray[arrayCount].url);
+              song.prependTo(newContent.find('form'));
+              
+            }
+            $('h2#title').html("Update playlist songs");
+            $('button#remove_btn').html("UPDATE");
+            newContent.find('button#addSong').click(function(e){
+                e.preventDefault();
+                addSong().insertBefore(newContent.parent().find('#containerButton')); 
+            });
+            newContent.find('form#formSongs').on("submit", function(e){
+                e.preventDefault();
+                 var songs=[];
+                $(e.target).find('div.containerInput').each(function(i,el){
+                   var song = {};
+                   song.url = $(el).find('input.inputUrl').val();
+                   song.name =$(el).find('input.inputName').val();
+                   songs.push(song);
+                });         
+                newContent.parent().remove();
+                saveNewSongs(id,songs);
+            });
         });
     });
     
+
+}
+
+
     function addSong(){
         var containerSong = $('<div>',{class:"containerInput"});
         var labelUrl = $('<label>',{text:"Song URL"}).appendTo(containerSong);
@@ -237,14 +354,6 @@ function addSongs(form){
         }).appendTo(labelName); 
         return containerSong;
     }
-
-}
-
-
-
-
-
-
 
 
 
