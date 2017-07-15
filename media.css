@@ -1,4 +1,19 @@
-
+@media (max-width:1190px){
+    div.playlist-container div.top{
+        width: 70%;
+    }
+        div.playlist-container div.playlist-editor{
+        right: -6.7rem;
+    }
+}
+@media (max-width:970px){
+    div.playlist-container div.top{
+        width: 80%;
+    } 
+    div.playlist-container div.playlist-editor{
+        right: -6.5rem;
+    }
+}
 @media (max-width:807px){
     div.playlist-container div.playlist-editor {
         margin: auto 0;
@@ -12,6 +27,18 @@
     }
     div.audio{
         margin-left: -1rem;
+    }
+}
+@media (max-width:720px){
+    div.playlist-container div.top{
+        width: 90%;
+        margin: 0 5px;
+    }
+     div.playlist-container{
+        justify-content: space-between;
+    }
+    div.playlist-container div.playlist-editor {
+        right: -6.5rem;
     }
 }
 @media (max-width:690px){
@@ -31,23 +58,58 @@
        width: 160px;
        height: 160px;
     }
+
 };
+@media (max-width:681px){
+    div.playlist-container div.playlist-editor{
+        right: -5.6rem;
+    }
+}
+@media (max-width:620px){
+    div.playlist-container div.playlist-editor{
+        right: -5.8rem;
+    }
+}
 @media (max-width:570px){
     div.playlist-container picture img{
        width: 150px;
        height: 150px;
     }
-    div.playlist-body picture div.pic-container{
-       margin: .8rem; 
-    }
-    div.playlist-body{
-        max-height: 12rem;  
-    }
-    div.playlist-body picture div.play-container{
-        top: 5rem;
-    }
+
 }
 
+@media (max-width:550px){
+
+    div.playlist-container {
+        justify-content: center;
+    }
+    div.playlist-container div.top div.playlist-body{
+        flex-direction: column;
+        max-width: 75%;
+    }
+    picture{
+        margin: 0 auto;
+    }
+    div.song-list{
+        margin: 0 auto;
+        overflow: visible;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        max-height: 100%;
+    }
+    div.playlist-container div.top{
+       height: inherit;
+       width: 80%;
+    }
+    div.playlist-container div.playlist-editor{
+        right: -1rem;
+        top: 0;
+    }
+    div.playlist-container div.playlist-editor button{
+        background-color: darkgray;
+    }
+    
+}
 
 @media (max-width:416px){
     header div.header-search{
@@ -77,33 +139,14 @@
     header div.header-add button{
         font-size: 12px;
     }
-    
-    /***********/
-    div.playlist-container div.top div.playlist-body{
-        justify-content: center;
-        width: 100%;
-        flex-wrap: wrap;
+    div.song-list ol li,
+    div.song-list ol li button{
+        font-size: 12px;
     }
-    div.song-list ol{
-        padding: 2px;
+    div.albums-container picture.album-pic{
+        padding: .8rem 0 0 0;
     }
-    div.playlist-container div.top{
-        width: 70%;
-        height: 25rem;
-    }
-
-    div.playlist-container div.top > span{
-        width: 100%;
-    }
-    div.playlist-container div.playlist-editor{
-        right: -2rem;
-    }
-    div.song-list{
-        padding-top: 0;
-    }
-    
-    
-    
+   
 }
 
 @media (max-width:330px){
@@ -141,6 +184,7 @@
        height: 145px;
     }    
 }
+
 
 
 

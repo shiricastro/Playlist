@@ -163,10 +163,10 @@ div.header-search input.back-button{
 
 
 div.playlist-container div.top{
-    background-color: thistle;
+    background-color: gainsboro;
     border-radius: 150px;
     width: 50%;
-    height: 18rem;
+    height: 19.7rem;
 }
 div.playlist-container div.top audio{
     width: 60%;
@@ -177,9 +177,11 @@ div.playlist-container div.top audio{
 div.playlist-container div.top > div.divName{
     display: flex;
     justify-content: flex-end;
-    margin: .8rem auto .5rem auto;
+    margin: .8rem auto .8rem auto;
     width: 60%;
     overflow: hidden;
+    height: 18px;
+
 }
 div.playlist-container div.top div.playlist-body{
     display: flex;
@@ -228,12 +230,16 @@ div.playlist-container picture img{
 }
 
 div.song-list{
-    padding-top: .5rem;
+    padding-left: 1rem;
+    max-width: 225px;
+    max-height: 170px;
+    overflow: overlay;
 
 }
 div.song-list ol{
     list-style-type: none;
     padding: 0;
+    margin: 0;
     
 }
 div.song-list ol li{
@@ -250,6 +256,7 @@ div.song-list ol li button{
     border: 0;
     background-color: inherit;
     font-family: 'Tauri', sans-serif;
+    text-align: left;
 }
 
 /***popup***/
@@ -395,7 +402,9 @@ div.playlist-body .pic-container img{
 .paused {
     animation-play-state: paused;
 }
-
+input:-webkit-autofill{
+    background-color: white!important;
+}
 
 
 
