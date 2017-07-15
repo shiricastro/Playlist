@@ -191,13 +191,24 @@ function createPopup() {
         var content = $('<div>', {
             id: "popup_container1",
             html: data
-        }).appendTo(popup);
+        }).appendTo(popup);        
         content.find('form#formAlbum').submit(function (e) {
             e.preventDefault();
-            newPlaylistObject.name = $(e.target).find('input[name=name]').val();
-            newPlaylistObject.image = $(e.target).find('input[name=pic]').val();
-            console.log(newPlaylistObject);
-            addSongs($(e.target));
+            popUpClick();
+            var name = $('input#inputName');
+            if(name.val() === ""){
+                $(name).css({"border-color":"#af2616"});
+            }else{
+                newPlaylistObject.name = $(e.target).find('input[name=name]').val();
+            }
+            if ($('img#previewButton').attr("src") === 'default-image.jpg'){
+               $('input.inputUrl').css({"border-color":"#af2616"}); 
+            }else{
+                $('input.inputUrl').css({"border-color":"inherit"});
+                newPlaylistObject.image = $(e.target).find('input[name=pic]').val();
+                console.log(newPlaylistObject);
+                addSongs($(e.target));   
+            }
         });
         popUpClick();
     });
@@ -205,22 +216,30 @@ function createPopup() {
 }
 
 function popUpClick(fromEdit,Url){
+   $('input#inputName').on('change', function(e){
+        e.preventDefault();
+        var name = $('input#inputName');
+        if(name.val() === ""){
+            $(name).css({"border-color":"#af2616"});  
+        }else{
+            $(name).css({"border-color":"inherit"});
+        }
+    });
    $('input.inputUrl').on('change', function(e){
         e.preventDefault();
         var picUrl = $(' form input[name=pic]').val();
         $('img#previewButton').attr("src", ("" + picUrl + ""));
         $('input.inputUrl').css({"border-color":"inherit"});
-        $('img#previewButton').on('error',function(){
-            
-            alert("Your Playlist URL is not valid");
-            if (fromEdit === "edit"){
-                $('img#previewButton').attr("src", Url);
-                $('input.inputUrl').val("" + Url + "");
-            }else{
-                $('input.inputUrl').css({"border-color":"#af2616"});
-                $('img#previewButton').attr("src", "default-image.jpg");                 
-            }         
-        }); 
+    });
+    $('img#previewButton').on('error',function(){            
+        if (fromEdit === "edit"){
+            alert('The album URL is not valid');
+            $('img#previewButton').attr("src", Url);
+            $('input.inputUrl').val("" + Url + "");
+        }else{
+            $('input.inputUrl').css({"border-color":"#af2616"});
+            $('img#previewButton').attr("src", "default-image.jpg");            
+        }
     });
     $('button#resetButton').click(function (e) {
         e.preventDefault();
@@ -317,16 +336,24 @@ function createPopupToEdit(val, id) {
         $('h2#title1').html("Update existing playlist");
         var picUrl = $(' form input[name=pic]').val();
         $('img#previewButton').attr("src", ("" + picUrl + ""));
-        content.find('form#formAlbum').submit(function (e) {
+        content.find('form#formAlbum').submit(function(e){
             e.preventDefault();
-            editAlbumObject.name = $(e.target).find('input[name=name]').val();
-            editAlbumObject.image = $(e.target).find('input[name=pic]').val();
-            editAlbum(id);
-            editSongs($(e.target), id);
-
+            var nameNew = $('input#inputName');
+            if(nameNew.val() === ""){
+                $(nameNew).css({"border-color":"#af2616"});
+            }else{ 
+                editAlbumObject.name = $(e.target).find('input[name=name]').val();
+                if ($('img#previewButton').attr("src") === 'default-image.jpg'){
+                    $('input.inputUrl').css({"border-color":"#af2616"}); 
+                }else{
+                    $('input.inputUrl').css({"border-color":"inherit"});
+                    editAlbumObject.image = $(e.target).find('input[name=pic]').val();
+                    editAlbum(id);
+                    editSongs($(e.target), id); 
+                }
+            }            
         });
         popUpClick("edit",picUrl);
-
     });
     popup.appendTo('body');
 }
