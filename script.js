@@ -116,7 +116,6 @@ function changeUnicodToPlay() {
 
 
 function deleteAlbumPopup(e, idAlbum) {
-    console.log(idAlbum);
     if (idAlbum === null) {
         var id = $(e.target).parents('picture').attr("id");
     } else {
@@ -144,7 +143,6 @@ function deleteAlbumPopup(e, idAlbum) {
 }
 
 function deleteAlbum(id, pop) {
-    console.log(id);
     $(pop).remove();
     $.ajax({
         url: 'http://localhost/playlist/public_html/api/playlist/' + id,
@@ -263,11 +261,10 @@ function addSongs(form) {
             addSong().insertBefore(newContent.parent().find('#containerButton'));
         });
         validUrl();
-        //$('input.inputUrl').attr("onchange","validUrl()");
         newContent.find('form#formSongs').on("submit", function (e) {
             e.preventDefault();
             newPlaylistObject.songs = [];
-           
+                   
                 $(e.target).find('div.containerInput').each(function (i, el) {
                     var song = {};
                     let url = $(el).find('input.inputUrl');
@@ -275,8 +272,8 @@ function addSongs(form) {
                     if ($(url).val() === ""){
                         $(url).css({"border-color":"#af2616"});
                     }else{
+                        validUrl();
                         song.url = $(url).val();
-                        $(url).css({"border-color":"inherit"});
                     }
                     if($(name).val() === ""){
                         $(name).css({"border-color":"#af2616"});
@@ -293,9 +290,7 @@ function addSongs(form) {
                    trueVal = trueVal+1;
                 }
             });
-            console.log(trueVal);
             if(trueVal === inputsNum){
-                console.log(newPlaylistObject);
                 newContent.parent().remove();
                 addAlbum();  
             }
@@ -394,7 +389,6 @@ function editSongs(form, id) {
     var content = form.parent().parent();
     content.remove();
     $.get("" + 'http://localhost/playlist/public_html/api/playlist/' + id + "/songs", function (dataSongs) {
-        console.log(dataSongs);
         let songsArray = dataSongs.data.songs;
         console.log(songsArray);
         $.get('popupSongs.html', function (data) {
@@ -404,7 +398,6 @@ function editSongs(form, id) {
             }).appendTo($('#popup1'));
             var arrayCount = Number(songsArray.length - 1);
             for (arrayCount; arrayCount >= Number(0); arrayCount--) {
-                console.log(arrayCount);
                 var song = addSong();
                 $(song).find('input.inputName').val(songsArray[arrayCount].name);
                 $(song).find('input.inputUrl').val(songsArray[arrayCount].url);
@@ -417,17 +410,40 @@ function editSongs(form, id) {
                 e.preventDefault();
                 addSong().insertBefore(newContent.parent().find('#containerButton'));
             });
+            validUrl();
             newContent.find('form#formSongs').on("submit", function (e) {
                 e.preventDefault();
                 var songs = [];
                 $(e.target).find('div.containerInput').each(function (i, el) {
                     var song = {};
-                    song.url = $(el).find('input.inputUrl').val();
-                    song.name = $(el).find('input.inputName').val();
-                    songs.push(song);
+                    let urlEdit = $(el).find('input.inputUrl');
+                    let nameEdit = $(el).find('input.inputName');
+                    if ($(urlEdit).val() === ""){
+                        $(urlEdit).css({"border-color":"#af2616"});
+                    }else{
+                        validUrl();
+                        song.url = $(el).find('input.inputUrl').val();
+                    }
+                    if($(nameEdit).val() === ""){
+                        $(nameEdit).css({"border-color":"#af2616"});
+                    }else{
+                        song.name = $(el).find('input.inputName').val();
+                        $(nameEdit).css({"border-color":"inherit"});
+                        songs.push(song);                       
+                    } 
                 });
+            let trueValEdit = 0;
+            var inputsNumEdit = $(e.target).find('div.containerInput input').length;
+            $(e.target).find('div.containerInput input').each(function(i,el){
+                if ($(el).css('border-color') === "rgb(0, 0, 0)"){                    
+                   trueValEdit = trueValEdit+1;
+                }
+            });
+            if(trueValEdit === inputsNumEdit){
                 newContent.parent().remove();
-                saveNewSongs(id, songs);
+                saveNewSongs(id, songs);  
+            }
+
             });
         });
     });
