@@ -164,10 +164,6 @@ function backHome() {
     albums();
 }
 
-
-
-
-
 /***popup***/
 
 var newPlaylistObject = {};
@@ -251,9 +247,6 @@ function popUpClick(fromEdit,Url){
 }
 
 
-
-
-
 function addSongs(form) {
     var content = form.parent().parent();
     content.remove();
@@ -269,23 +262,62 @@ function addSongs(form) {
             e.preventDefault();
             addSong().insertBefore(newContent.parent().find('#containerButton'));
         });
+        validUrl();
+        //$('input.inputUrl').attr("onchange","validUrl()");
         newContent.find('form#formSongs').on("submit", function (e) {
             e.preventDefault();
             newPlaylistObject.songs = [];
-            $(e.target).find('div.containerInput').each(function (i, el) {
-                var song = {};
-                song.url = $(el).find('input.inputUrl').val();
-                song.name = $(el).find('input.inputName').val();
-                newPlaylistObject.songs.push(song);
+           
+                $(e.target).find('div.containerInput').each(function (i, el) {
+                    var song = {};
+                    let url = $(el).find('input.inputUrl');
+                    let name = $(el).find('input.inputName');
+                    if ($(url).val() === ""){
+                        $(url).css({"border-color":"#af2616"});
+                    }else{
+                        song.url = $(url).val();
+                        $(url).css({"border-color":"inherit"});
+                    }
+                    if($(name).val() === ""){
+                        $(name).css({"border-color":"#af2616"});
+                    }else{
+                        song.name = $(name).val();
+                        $(name).css({"border-color":"inherit"});
+                        newPlaylistObject.songs.push(song);                        
+                    }                                   
+                });
+            let trueVal = 0;
+            var inputsNum = $(e.target).find('div.containerInput input').length;
+            $(e.target).find('div.containerInput input').each(function(i,el){
+                if ($(el).css('border-color') === "rgb(0, 0, 0)"){                    
+                   trueVal = trueVal+1;
+                }
             });
-            console.log(newPlaylistObject);
-            newContent.parent().remove();
-            addAlbum();
-
+            console.log(trueVal);
+            if(trueVal === inputsNum){
+                console.log(newPlaylistObject);
+                newContent.parent().remove();
+                addAlbum();  
+            }
         });
     });
 }
+function validUrl(e){
+    var url = /(http:)?(www)?[-a-zA-Z0-9@:%_\+.~#?\/=]+\.mp3/i;
+    var regex = new RegExp(url);
+    $('input.inputUrl').each(function(i,el){
+       $(el).on('change',function(e){
+        e.preventDefault();
+        var urlSong = $(el).val();
+        if (urlSong.match(regex) !== null) {
+            $(el).css({'border-color':'inherit'});
+        }else{
+            $(el).css({'border-color':'#af2616'});                   
+        }
+       });
+    });
 
+};
 function addAlbum() {
     $.post('http://localhost/playlist/public_html/api/playlist', newPlaylistObject, function (data, textStatus, xhr) {
         console.log(xhr.status);
