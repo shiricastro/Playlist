@@ -1,3 +1,22 @@
+/***search***/
+function searchAlbum(albums){
+    $('div.header-search input.searchAlbum').on("keyup",function(e){
+        e.preventDefault();
+        $('picture').each(function(i,el){
+           $(el).css({"display":"none"}); 
+        });
+        var matchAlbums = albums.filter(function(item){
+                return item.name.includes($('input.searchAlbum').val());
+        }); 
+        $(matchAlbums).each(function(i,el){
+            let id = el.id;
+            let elem = $(""+ 'picture#'+ id + "")[0];
+           $(elem).css({"display":"block"});
+        });        
+    });   
+}
+
+
 /***albums***/
 
 albums();
@@ -27,6 +46,7 @@ function albums() {
                     playAlbum(e, el.id);
                 }}).appendTo(playContainer);
         });
+        searchAlbum(data.data);
     });
 }
 
@@ -156,6 +176,7 @@ function deleteAlbum(id, pop) {
 }
 
 function backHome() {
+    $('input.searchAlbum').val("");
     $('input.back-button').css({"display": "none"});
     $('input.search').css({"display": "block"});
     $('.playlist-container').remove();
