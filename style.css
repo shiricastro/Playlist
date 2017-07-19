@@ -119,6 +119,7 @@ div.playlist-container picture img{
 }
 
 div.albums-container picture button.play-unicode,
+div.albums-container picture button.empty,
 div.playlist-container picture button.play-unicode{
     border-radius: 100%;
     width: 30px;
@@ -128,12 +129,23 @@ div.playlist-container picture button.play-unicode{
     padding: 0 0 0 2.5px;
     border:0;
 }
+div.albums-container picture button.play-unicode{
+    display: none;
+}
+
+div.albums-container picture:hover button.play-unicode,
+div.albums-container picture:focus button.play-unicode{
+    display: inline-block;
+}
+div.albums-container picture:hover button.empty,
+div.albums-container picture:focus button.empty{
+    display: none;
+}
 div.playlist-container picture button.play-unicode{
     padding: 0px;
     font-size: 22.2px;
 }
-picture.album-pic .editor ,
-picture.album-pic .play-container{
+picture.album-pic .editor{
     visibility: hidden;
 }
 div.albums-container picture.album-pic:hover,
@@ -141,9 +153,7 @@ div.albums-container picture.album-pic:focus{
     opacity: 1;
 }
 div.albums-container picture.album-pic:hover .editor,
-div.albums-container picture.album-pic:hover .play-container,
-div.albums-container picture.album-pic:focus .editor,
-div.albums-container picture.album-pic:focus .play-container{
+div.albums-container picture.album-pic:focus .editor{
     visibility: visible;
 }
 button{

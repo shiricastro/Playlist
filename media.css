@@ -146,6 +146,10 @@
     div.albums-container picture.album-pic{
         padding: .8rem 0 0 0;
     }
+    div.albums-container picture.album-pic div.editor{
+        width: 100%;
+        top: 3.8rem;
+    }
    
 }
 

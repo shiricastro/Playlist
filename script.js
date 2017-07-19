@@ -41,15 +41,23 @@ function albums() {
             var picContainer = $('<div>', {class: "pic-container"}).appendTo(album);
             $('<img>', {src: el.image, alt: el.name}).appendTo(picContainer);
             var playContainer = $('<div>', {class: "play-container"}).appendTo(picContainer);
-            $('<button>', {text: "►", class: "play-unicode", click: function (e) {
+            $('<button>', {class: "empty"}).appendTo(playContainer);;
+            $('<button>', {text:"►",class: "play-unicode", click: function (e) {
                     e.preventDefault();
                     playAlbum(e, el.id);
                 }}).appendTo(playContainer);
+
         });
+        /*$('div.albums-container picture.album-pic').mouseover(function() {
+              $('.play-unicode').html("►");
+            });
+
+            $('div.albums-container picture.album-pic').mouseout(function() {
+              $('.play-unicode').html("");
+            });*/
         searchAlbum(data.data);
     });
 }
-
 
 
 
