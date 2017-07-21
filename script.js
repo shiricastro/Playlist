@@ -6,7 +6,7 @@ function searchAlbum(albums){
            $(el).css({"display":"none"}); 
         });
         var matchAlbums = albums.filter(function(item){
-                return item.name.includes($('input.searchAlbum').val());
+                return item.name.toLowerCase().includes($('input.searchAlbum').val().toLowerCase());
         }); 
         $(matchAlbums).each(function(i,el){
             let id = el.id;
@@ -15,7 +15,6 @@ function searchAlbum(albums){
         });        
     });   
 }
-
 
 /***albums***/
 
@@ -48,13 +47,6 @@ function albums() {
                 }}).appendTo(playContainer);
 
         });
-        /*$('div.albums-container picture.album-pic').mouseover(function() {
-              $('.play-unicode').html("►");
-            });
-
-            $('div.albums-container picture.album-pic').mouseout(function() {
-              $('.play-unicode').html("");
-            });*/
         searchAlbum(data.data);
     });
 }
@@ -109,7 +101,6 @@ function playAlbum(e, id) {
                     $('li:first-child span').html("►");
                     $('li:first-child').css({"opacity": "1"});
                 });
-                console.log(dataSongs);
             });
         });
     });
@@ -229,7 +220,6 @@ function createPopup() {
             }else{
                 $('input.inputUrl').css({"border-color":"inherit"});
                 newPlaylistObject.image = $(e.target).find('input[name=pic]').val();
-                console.log(newPlaylistObject);
                 addSongs($(e.target));   
             }
         });
@@ -344,7 +334,6 @@ function validUrl(e){
 };
 function addAlbum() {
     $.post('http://localhost/playlist/public_html/api/playlist', newPlaylistObject, function (data, textStatus, xhr) {
-        console.log(xhr.status);
         $('header').siblings('div')[0].remove();
         backHome();
     });
@@ -355,7 +344,6 @@ function editPlaylist(v, id) {
     if (v === null) {
         pauseAudio();
     }
-    console.log("edit is active" + ": " + id);
     $.get("" + 'http://localhost/playlist/public_html/api/playlist/' + id + "", function (data) {
         createPopupToEdit(data.data, id);
     });
@@ -419,7 +407,6 @@ function editSongs(form, id) {
     content.remove();
     $.get("" + 'http://localhost/playlist/public_html/api/playlist/' + id + "/songs", function (dataSongs) {
         let songsArray = dataSongs.data.songs;
-        console.log(songsArray);
         $.get('popupSongs.html', function (data) {
             var newContent = $('<div>', {
                 id: "popup_container",
